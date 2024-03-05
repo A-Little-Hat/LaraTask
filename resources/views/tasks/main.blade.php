@@ -18,7 +18,7 @@
         @csrf
         @method('DELETE')
         <button type="submit">DELETE</button>
-    </form> 
+    </form>
 </div>
 @elseif(in_array(auth()->user()->name,json_decode($task->assigned)))
 <div>

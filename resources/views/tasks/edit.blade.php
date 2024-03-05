@@ -27,27 +27,23 @@
         <div class="m-10">
             <fieldset>
                 <legend>Choose category:</legend>
+                @foreach($category as $c)
                 <div>
-                  <input type="checkbox" id="database" name="category[]" value="database" />
-                  <label for="database">database</label>
+                  <input type="checkbox" id="{{$c->category_name	}}" name="category[]" value="{{$c->category_name	}}" />
+                  <label for="{{$c->category_name	}}">{{$c->category_name	}}</label>
                 </div>
-                <div>
-                  <input type="checkbox" id="network" name="category[]" value="network" />
-                  <label for="network">network</label>
-                </div>
-              </fieldset>
+                @endforeach
+            </fieldset>
         </div>
         <div class="m-10">
             <fieldset>
                 <legend>Assign users:</legend>
+                @foreach($username as $name)
                 <div>
-                  <input type="checkbox" id="bishal" name="assigned[]" value="bishal" />
-                  <label for="bishal">bishal</label>
+                  <input type="checkbox" id="{{ $name->name }}" name="assigned[]" value="{{ $name->name }}" />
+                  <label for="{{ $name->name }}">{{ $name->name }}</label>
                 </div>
-                <div>
-                  <input type="checkbox" id="soumya" name="assigned[]" value="soumya" />
-                  <label for="soumya">soumya</label>
-                </div>
+                @endforeach
               </fieldset>
         </div>
         <div class="m-10">

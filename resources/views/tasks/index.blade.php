@@ -3,7 +3,7 @@
 </form>
 
 @foreach($tasks as $t)
-<a href="{{ url('/tasks/'.$t->task_id) }}">
+<a href="{{ url('/tasks/view/'.$t->task_id) }}">
     <p>{{ $t->title }}</p>
     <p>{{ $t->description }}</p>
     <div>

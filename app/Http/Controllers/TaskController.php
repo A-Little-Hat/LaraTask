@@ -50,7 +50,12 @@ class TaskController extends Controller
 
     public function edit($task_id)
     {
-        return view('tasks.edit', ['task' => Task::where('task_id',$task_id)->get()]);
+        $cat = Category::all();
+        $task = Task::where('task_id',$task_id)->get();
+        $user=Auth::user();
+        $v='user';
+        $username = User::select('name')->where('role',$v)->get();
+        return view('tasks.edit', ['task' => $task, 'username'=> $username, 'category'=> $cat]);
     }
 
     public function update(Request $request, $task_id)

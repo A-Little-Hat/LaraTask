@@ -28,7 +28,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 # tasks
 Route::middleware(['auth'])->group(function () {
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
-    Route::get('/tasks/{task_id}', [TaskController::class, 'main'])->name('tasks.main');
+    Route::get('/tasks/view/{task_id}', [TaskController::class, 'main'])->name('tasks.main');
     Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
     Route::post('/tasks/create', [TaskController::class, 'store'])->name('tasks.store');
     Route::get('/tasks/edit/{task_id}', [TaskController::class, 'edit'])->name('tasks.edit');

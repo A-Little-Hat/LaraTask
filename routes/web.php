@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
-// use App\Http\Controllers\Auth;
+use App\Http\Controllers\CommentController;
 
 
 Route::get('/', function () {
@@ -37,6 +37,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/tasks/edit/status/{task_id}', [TaskController::class, 'updateStatus'])->name('tasks.updatestatus');
     Route::delete('/tasks/delete/{task_id}', [TaskController::class, 'remove'])->name('tasks.remove');
 });
+
+# comments
+Route::middleware(['auth'])->group(function () {
+    Route::post('/comment/add/{task_id}', [CommentController::class, 'add'])->name('comments.add');
+});
+
 
 #demo
 Route::get('/demo', [TaskController::class, 'demo']);

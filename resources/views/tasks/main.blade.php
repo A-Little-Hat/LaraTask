@@ -22,9 +22,30 @@
 </div>
 @elseif(in_array(auth()->user()->name,json_decode($task->assigned)))
 <div>
-    <form action="{{ url('/tasks/edit/status/'.$task->task_id) }}" method="get">
+    <form action="{{ url('/tasks/edit/status/'.$task->task_id.'/'.auth()->user()->name) }}" method="get">
         <button type="submit">UPDATE</button>
     </form>
 </div>
 @endif
 @endauth
+<div>
+    comments:
+    <div>
+        @foreach($comments as $comment)
+        <div>
+            {{$comment->author}}: {{$comment->body}}
+        </div>
+        <p>Created at: {{$comment->created_at}}</p>
+        @endforeach
+    </div>
+    @if(in_array(auth()->user()->name,json_decode($task->assigned)) || auth()->user()->role == 'admin' || auth()->user()->id == $task->id)
+    <div>
+        <form action="{{ url('/comment/add/'.$task->task_id) }}" method="post">
+        @csrf
+            <label for="comment">comment</label>
+            <input type="text" name="body" id="body">
+            <button type="submit">send</button>
+        </form>
+    </div>
+    @endif
+</div>

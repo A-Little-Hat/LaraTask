@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,8 +45,9 @@ class TaskController extends Controller
 
     public function main($task_id)
     {
+        $comments=Comment::where('task_id',$task_id)->get();
         $task=Task::where('task_id',$task_id)->get();
-        return view('tasks.main', ['task' => $task[0]]);
+        return view('tasks.main', ['task' => $task[0], 'comments'=>$comments]);
     }
 
     public function edit($task_id)

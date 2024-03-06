@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CategoryController;
 
 
 Route::get('/', function () {
@@ -21,8 +22,12 @@ Route::middleware('auth')->group(function () {
 });
 
 # admin
-Route::middleware(['auth', 'role:admin'])->group(function () {
+
+Route::middleware(['admin'])->group(function () {
     // Admin-only routes or actions
+    Route::get('/category',[CategoryController::class,'index'])->name('category.index');
+    Route::post('/category/add',[CategoryController::class,'add'])->name('category.add');
+    Route::delete('/category/delete/{category_id}',[CategoryController::class,'delete'])->name('category.delete');
 });
 
 # tasks

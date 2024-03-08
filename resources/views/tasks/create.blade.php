@@ -1,3 +1,4 @@
+<x-app-layout>
 <h4>Add Task</h4>
 <form action="/tasks/create" method="post">
 @csrf <!-- CSRF Protection -->
@@ -49,3 +50,4 @@
         </div>
     </div>
 </form>
+</x-app-layout>

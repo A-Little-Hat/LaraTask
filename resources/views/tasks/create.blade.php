@@ -1,8 +1,8 @@
 <x-app-layout>
-<div class="bg-gray-800 text-white p-8 rounded-lg">
+<div class="max-w-7xl mx-auto mt-5 bg-gray-800 text-white p-8 rounded-lg">
   <h2 class="text-2xl font-bold mb-4">Add Task</h2>
   <form action="/tasks/create" method="post">
-    @csrf
+    @csrf 
     <div class="mb-4">
       <label for="title" class="block mb-1">Title:</label>
       <input type="text" name="title" id="title" class="text-black w-full px-3 py-2 border rounded-md" required>
@@ -44,7 +44,6 @@
     <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Add Task</button>
   </form>
 </div>
-<!-- me -->
     <!-- <div class="text-white w-full flex justify-center" >
 
         <h4>Add Task</h4>

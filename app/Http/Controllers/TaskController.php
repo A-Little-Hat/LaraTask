@@ -92,6 +92,7 @@ class TaskController extends Controller
     public function update(Request $request, $task_id)
     {
 
+        $user=Auth::user();
         Task::where('task_id', $task_id)
                 ->update([
                     'title'=> $request->input('title'),

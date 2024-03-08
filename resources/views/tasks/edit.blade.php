@@ -1,7 +1,53 @@
 <x-app-layout>
-<h4>Update Task</h4>
+<div class="max-w-7xl mx-auto mt-5 bg-gray-800 text-white p-8 rounded-lg">
+  <h2 class="text-2xl font-bold mb-4">Update Task</h2>
+  <form action="{{ url('/tasks/edit/'.$task[0]->task_id) }}" method="post">
+    @csrf
+    @method('put')
+    <div class="mb-4">
+      <label for="title" class="block mb-1">Title:</label>
+      <input type="text" name="title" id="title" class="text-black w-full px-3 py-2 border rounded-md" value="{{ $task[0]->title }}" required>
+    </div>
+    <div class="mb-4">
+      <label for="description" class="block mb-1">Description:</label>
+      <textarea name="description" id="description" class="text-black w-full px-3 py-2 border rounded-md" required>{{ $task[0]->description }}</textarea>
+    </div>
+    <div class="mb-4">
+      <label for="dueDate" class="block mb-1">Due Date:</label>
+      <input type="date" name="dueDate" id="dueDate" class="text-black w-full px-3 py-2 border rounded-md" value="{{ $task[0]->due_date }}">
+    </div>
+    <div class="mb-4">
+      <label for="status" class="block mb-1">Status:</label>
+      <select name="status" id="status" class="text-black w-full px-3 py-2 border rounded-md" required>
+        <option value="pending" {{ $task[0]->status == 'pending' ? 'selected' : '' }}>Pending</option>
+        <option value="in_progress" {{ $task[0]->status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
+        <option value="completed" {{ $task[0]->status == 'completed' ? 'selected' : '' }}>Completed</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label for="category" class="block mb-1">Category:</label>
+      @foreach($category as $c)
+      <div class="inline-block mr-2">
+        <input type="checkbox" id="category_{{$c->category_name}}" name="category[]" value="{{$c->category_name}}" class="mr-1" {{ in_array($c->category_name, old('category', [])) ? 'checked' : '' }}>
+        <label for="category_{{$c->category_name}}">{{$c->category_name}}</label>
+      </div>
+      @endforeach
+    </div>
+    <div class="mb-4">
+      <label for="assigned" class="block mb-1">Assigned To:</label>
+      @foreach($username as $name)
+      <div class="inline-block mr-2">
+        <input type="checkbox" id="{{ $name->name }}" name="assigned[]" value="{{ $name->name }}" class="mr-1" {{ in_array($name->name, old('assigned', [])) ? 'checked' : '' }}>
+        <label for="{{ $name->name }}">{{ $name->name }}</label>
+      </div>
+      @endforeach
+    </div>
+    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Update Task</button>
+  </form>
+</div>
+<!-- <h4>Update Task</h4>
 <form action="{{ url('/tasks/edit/'.$task[0]->task_id) }}" method="post">
-@csrf <!-- CSRF Protection -->
+@csrf
 @method('put')
 
     <div class="h-screen">
@@ -51,5 +97,5 @@
             <button type="submit">Update Task</button>
         </div>
     </div>
-</form>
+</form> -->
 </x-app-layout>

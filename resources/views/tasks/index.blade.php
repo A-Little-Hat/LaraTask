@@ -1,5 +1,36 @@
 <x-app-layout>
-    <div class="py-12">
+<div class="py-12">
+    <div class="max-w-7xl mx-auto lg:px-8 min-h-full dark:bg-gray-800">
+        <div class="p-6 text-3xl text-gray-900 dark:text-gray-100">
+            Welcome @auth {{Auth::user()->name}} @if(Auth::user()->role=='admin') (Admin) @endif @endauth
+            <form action="/tasks/create">
+                <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add Task</button>
+            </form>
+        </div>
+        <div class="mb-5">
+            <input type="text" name="search" id="searchText" class="border-2 border-gray-300 rounded-md p-2 m-2" placeholder="Search">
+            <select name="status" id="status" class="border-2 border-gray-300 rounded-md p-2 m-2">
+                <option value="" selected>Select status</option>
+                <option value="pending">pending</option>
+                <option value="in_progress">in_progress</option>
+                <option value="completed">completed</option>
+            </select>
+            <select name="category" id="category" class="border-2 border-gray-300 rounded-md p-2 m-2">
+                <option value="" selected>Select Category</option>
+                <!-- category -->
+            </select>
+            <span class="text-white">From</span>
+            <input type="datetime-local" name="date" id="from" class="border-2 border-gray-300 rounded-md p-2 m-2">
+            <span class="text-white">to</span>
+            <input type="datetime-local" name="date" id="to" class="border-2 border-gray-300 rounded-md p-2 m-2">
+            <button id="searchBTN" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Search</button>
+        </div>
+        <div class="flex flex-wrap shadow-sm rounded-lg" id="taskDiv">
+            <!-- tasks -->
+        </div>
+    </div>
+</div>
+    <!-- <div class="py-12">
         <div class="max-w-7xl mx-auto lg:px-8 min-h-full dark:bg-gray-800">
             <div class="p-6 text-3xl text-gray-900 dark:text-gray-100">
                 Welcome @auth {{Auth::user()->name}} @if(Auth::user()->role=='admin') (Admin) @endif @endauth
@@ -19,7 +50,7 @@
                     <option value="completed">completed</option>
                 </select>
                 <select name="category" id="category">
-                    <!-- category -->
+                    category
                 </select>
                 <span>From</span>
                 <input type="datetime-local" name="date" id="from">
@@ -28,10 +59,10 @@
                 <button id="searchBTN">search</button>
             </div>
             <div class="flex pb-5  flex-wrap shadow-sm  sm:rounded-lg" id="taskDiv">
-                <!-- tasks -->
+                tasks
             </div>
         </div>
-    </div>
+    </div> -->
 </x-app-layout>
 
 <script type="module">
@@ -72,11 +103,11 @@
             })
             // console.log({catText})
             renderText += `
-            <div class="block  min-w-sm p-6 m-5 border border-gray-200 rounded-lg shadow dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <div class="block flex-1 min-w-[400px] p-6 m-5 border border-gray-200 rounded-lg shadow dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-gray-700">
                 <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     ${task['title']}
                 </span>
-                <h3 class="mb-2 tracking-tight text-gray-900 dark:text-white">
+                <h3 class="mb-2 tracking-tight text-gray-900 dark:text-white text-ellipsis overflow-hidden max-h-[100px]">
                     ${task['description']}
                 </h3>
                 <div class="mb-5">

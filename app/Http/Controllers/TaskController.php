@@ -7,7 +7,10 @@ use App\Models\Task;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\User;
+use Mail;
+use App\Mail\LaraTaskMail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -45,6 +48,26 @@ class TaskController extends Controller
         $task->category = json_encode($request->input('category',[]));
         $task->assigned = json_encode($request->input('assigned',[]));
         $task->save();
+        $userEmail = User::select('email')->whereIn('name', $request->input('assigned',[]))->get();
+        // $i=0;
+        foreach($userEmail as $u){
+            $cname = User::select('name')->whereIn('email', $u)->get();
+            $mailData=[
+                'title'=>"Task Assigned",
+                'body'=>'Dear '.$cname[0]->name.',
+    
+                LaraTask hopes this email finds you well. LaraTask wanted to inform you that '.$user->name.' has created a new task that you are assigned. Due date is '.$request->input('dueDate').'.
+                Kindly check the details at your earliest convenience and proceed with the necessary actions. Your prompt attention to this matter would be greatly appreciated.
+                
+                If you have any questions or need further clarification regarding the task, please feel free to comment down in the task.
+                
+                Thank you for your cooperation.
+                
+                Best regards,
+                Team LaraTask'
+            ];
+            Mail::to($u)->send(new LaraTaskMail($mailData));
+        }
         return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
     }
 
@@ -52,7 +75,8 @@ class TaskController extends Controller
     {
         $comments=Comment::where('task_id',$task_id)->get();
         $task=Task::where('task_id',$task_id)->get();
-        return view('tasks.main', ['task' => $task[0], 'comments'=>$comments]);
+        $documents = Storage::files("documents/{$task_id}");
+        return view('tasks.main', ['task' => $task, 'comments'=>$comments, 'documents'=> $documents]);
     }
 
     public function edit($task_id)
@@ -77,7 +101,26 @@ class TaskController extends Controller
                     'category'=> json_encode($request->input('category',[])),
                     'assigned'=> json_encode($request->input('assigned',[])),
                 ]);
-
+                $userEmail = User::select('email')->whereIn('name', $request->input('assigned',[]))->get();
+                // $i=0;
+                foreach($userEmail as $u){
+                    $cname = User::select('name')->whereIn('email', $u)->get();
+                    $mailData=[
+                        'title'=>"Task update alert",
+                        'body'=>'Dear '.$cname[0]->name.',
+            
+                        LaraTask hopes this email finds you well. LaraTask wanted to inform you that '.$user->name.' has updated a task that you are assigned. Due date is '.$request->input('dueDate').'.
+                        Kindly check the details at your earliest convenience and proceed with the necessary actions. Your prompt attention to this matter would be greatly appreciated.
+                        
+                        If you have any questions or need further clarification regarding the task, please feel free to comment down in the task.
+                        
+                        Thank you for your cooperation.
+                        
+                        Best regards,
+                        Team LaraTask'
+                    ];
+                    Mail::to($u)->send(new LaraTaskMail($mailData));
+                }
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
     }
 
@@ -105,6 +148,8 @@ class TaskController extends Controller
 
     public function demo()
     {
-        
+        // $documents = Storage::files("documents");
+        $u = ['test','soumya'];
+        dd(User::select('name','email')->whereIn('name',$u)->get());
     }
 }

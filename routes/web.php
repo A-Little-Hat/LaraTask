@@ -6,6 +6,8 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\FileUploadController;
+
 
 
 Route::get('/', function () {
@@ -38,8 +40,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tasks/create', [TaskController::class, 'store'])->name('tasks.store');
     Route::get('/tasks/edit/{task_id}', [TaskController::class, 'edit'])->name('tasks.edit');
     Route::put('/tasks/edit/{task_id}', [TaskController::class, 'update'])->name('tasks.update');
-    Route::get('/tasks/edit/status/{task_id}', [TaskController::class, 'editStatus'])->name('tasks.editstatus');
-    Route::put('/tasks/edit/status/{task_id}', [TaskController::class, 'updateStatus'])->name('tasks.updatestatus');
+    Route::get('/tasks/update/status/{task_id}', [TaskController::class, 'editStatus'])->name('tasks.editstatus');
+    Route::put('/tasks/update/status/{task_id}', [TaskController::class, 'updateStatus'])->name('tasks.updatestatus');
     Route::delete('/tasks/delete/{task_id}', [TaskController::class, 'remove'])->name('tasks.remove');
 
     #category
@@ -55,6 +57,11 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/mail/send/{name}',[MailController::class,'index']);
 
+
+# file handle
+Route::post('/file/upload/{task_id}',[FileUploadController::class,'uploadFile']);
+Route::get('/file/download/{task_id}/{filename}', [FileUploadController::class, 'download'])->name('document.download');
+Route::get('/file/delete/{task_id}/{filename}', [FileUploadController::class, 'delete'])->name('document.download');
 #demo
 Route::get('/demo', [TaskController::class, 'demo']);
 require __DIR__.'/auth.php';

@@ -27,7 +27,7 @@ class LaraTaskMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Task Assigned',
+            subject: 'LaraTask Alert',
         );
     }
 

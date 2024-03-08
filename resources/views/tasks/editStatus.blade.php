@@ -1,6 +1,6 @@
 <x-app-layout>
     <h4>Update status</h4>
-<form action="{{ url('/tasks/edit/status/'.$task[0]->task_id) }}" method="post">
+<form action="{{ url('/tasks/update/status/'.$task[0]->task_id) }}" method="post">
 @csrf <!-- CSRF Protection -->
 @method('put')
     <div class="h-screen">

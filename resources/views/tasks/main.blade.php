@@ -2,29 +2,29 @@
     <div class="py-12">
         <div class="max-w-7xl min-h-80 pt-5 mx-auto lg:px-8 dark:bg-gray-800">
             <p class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Title: {{ $task->title }}
+                Title: {{ $task[0]->title }}
             </p>
             <p class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Description: {{ $task->description }}
+                Description: {{ $task[0]->description }}
             </p>
             <div class="mb-2 text-xl text-gray-700 dark:text-white">
                 Assigned People:
-                @foreach(json_decode($task->assigned) as $assign)
+                @foreach(json_decode($task[0]->assigned) as $assign)
                 <p>
                     &#8226 {{ $assign }}
                 </p>
                 @endforeach
             </div>
             @auth
-            @if(auth()->user()->id == $task->id || auth()->user()->role == 'admin')
+            @if(auth()->user()->id == $task[0]->id || auth()->user()->role == 'admin')
             <div class="flex">
-                <form class="mx-5" action="{{ url('/tasks/edit/'.$task->task_id) }}">
+                <form class="mx-5" action="{{ url('/tasks/edit/'.$task[0]->task_id) }}">
                     <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         UPDATE
                     </button>
                 </form>
-                <form class="mx-5" action="{{ url('/tasks/delete/'.$task->task_id) }}" method="post">
+                <form class="mx-5" action="{{ url('/tasks/delete/'.$task[0]->task_id) }}" method="post">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
@@ -33,9 +33,9 @@
                     </button>
                 </form>
             </div>
-            @elseif(in_array(auth()->user()->name,json_decode($task->assigned)))
+            @elseif(in_array(auth()->user()->name,json_decode($task[0]->assigned)))
             <div>
-                <form action="{{ url('/tasks/edit/status/'.$task->task_id.'/'.auth()->user()->name) }}" method="get">
+                <form action="{{ url('/tasks/update/status/'.$task[0]->task_id) }}" method="get">
                     <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         UPDATE
@@ -68,10 +68,10 @@
                             @endforeach
 
                         </div>
-                        @if(in_array(auth()->user()->name,json_decode($task->assigned)) || auth()->user()->role ==
+                        @if(in_array(auth()->user()->name,json_decode($task[0]->assigned)) || auth()->user()->role ==
                         'admin' ||
-                        auth()->user()->id == $task->id)
-                        <form class="m-6 p-5" action="{{ url('/comment/add/'.$task->task_id) }}" method="post">
+                        auth()->user()->id == $task[0]->id)
+                        <form class="m-6 p-5" action="{{ url('/comment/add/'.$task[0]->task_id) }}" method="post">
                             @csrf
                             <div
                                 class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -87,7 +87,24 @@
                         @endif
                     </section>
                 </div>
-                <div class="flex-w-1/2 mx-auto">{.....}</div>
+                <div class="flex-w-1/2 mx-auto">
+                    <div class="text-white" >
+                        @foreach($documents as $doc)
+                        <div>
+                            <span>{{ preg_replace('/^documents\/'.$task[0]->task_id.'\//', '', $doc) }}</span>
+                            <a href="{{ url('/file/download/'.$task[0]->task_id.'/'.preg_replace('/^documents\/'.$task[0]->task_id.'\//', '', $doc)) }}"><button>Download File</button></a>
+                            <a href="{{ url('/file/delete/'.$task[0]->task_id.'/'.preg_replace('/^documents\/'.$task[0]->task_id.'\//', '', $doc)) }}"><button>Delete File</button></a>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div>
+                        <form action="{{ url('/file/upload/'.$task[0]->task_id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="document">
+                            <button type="submit">Upload Document</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

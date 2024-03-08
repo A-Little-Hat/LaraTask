@@ -5,15 +5,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MailController;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [TaskController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,6 +32,7 @@ Route::middleware(['admin'])->group(function () {
 # tasks
 Route::middleware(['auth'])->group(function () {
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('/tasks/all', [TaskController::class, 'show'])->name('tasks.show');
     Route::get('/tasks/view/{task_id}', [TaskController::class, 'main'])->name('tasks.main');
     Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
     Route::post('/tasks/create', [TaskController::class, 'store'])->name('tasks.store');
@@ -41,6 +41,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tasks/edit/status/{task_id}', [TaskController::class, 'editStatus'])->name('tasks.editstatus');
     Route::put('/tasks/edit/status/{task_id}', [TaskController::class, 'updateStatus'])->name('tasks.updatestatus');
     Route::delete('/tasks/delete/{task_id}', [TaskController::class, 'remove'])->name('tasks.remove');
+
+    #category
+    Route::get('/category/all',[CategoryController::class,'show']);
 });
 
 # comments
@@ -48,6 +51,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/comment/add/{task_id}', [CommentController::class, 'add'])->name('comments.add');
 });
 
+# mail
+
+Route::get('/mail/send/{name}',[MailController::class,'index']);
 
 #demo
 Route::get('/demo', [TaskController::class, 'demo']);

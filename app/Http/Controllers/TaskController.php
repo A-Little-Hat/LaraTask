@@ -16,6 +16,11 @@ class TaskController extends Controller
         $tasks = Task::all();
         return view('tasks.index', ['tasks' => $tasks]);
     }
+    public function show()
+    {
+        $task = Task::all();
+        return response()->json($task);
+    }
 
     public function create()
     {
@@ -100,15 +105,6 @@ class TaskController extends Controller
 
     public function demo()
     {
-        // []
-        // $cat = Category::all();
-        // $tasks = Task::all();
-        $user=Auth::user();
-        $v='user';
-        $username = User::select('name')->where('role',$v)->whereNotIn('id',[$user->id])->get();
-        print_r($username);
-        // echo $username == [];
-        // $username = User::all();
-        // return view('tasks.create', ['tasks' => $tasks, 'username'=> $username, 'category'=> $cat]);
+        
     }
 }

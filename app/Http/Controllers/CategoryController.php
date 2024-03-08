@@ -22,4 +22,9 @@ class CategoryController extends Controller
         Category::where('category_id',$category_id)->delete();
         return redirect('/category');
     }
+    public function show()
+    {
+        $category = Category::all();
+        return response()->json($category);
+    }
 }

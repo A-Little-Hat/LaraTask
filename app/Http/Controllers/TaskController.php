@@ -76,7 +76,8 @@ class TaskController extends Controller
         $comments=Comment::where('task_id',$task_id)->get();
         $task=Task::where('task_id',$task_id)->get();
         $documents = Storage::files("documents/{$task_id}");
-        return view('tasks.main', ['task' => $task, 'comments'=>$comments, 'documents'=> $documents]);
+        $cat = Category::all();
+        return view('tasks.main', ['task' => $task, 'comments'=>$comments, 'documents'=> $documents, 'categories'=>$cat]);
     }
 
     public function edit($task_id)
